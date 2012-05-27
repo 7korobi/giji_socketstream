@@ -1,0 +1,71 @@
+!!! 5
+html(lang="en")
+  head
+    meta(http-equiv='Content-Type', content='text/html; charset=utf-8')
+    meta(content="5XfF9jxZXTTrKIksWGPJLQOfhlsOzg3Ew7-64YLdDxw", name="google-site-verification")
+    meta(content="7korobi@gmail.com", name="Author")
+    meta(name="viewport", content="width=device-width, target-densitydpi=device-dpi, user-scalable=yes, initial-scale=1.0, minimum-scale=1.0, maximum-scale=2.0")
+
+    link(href="mailto:7korobi@gmail.com", rev="Made")
+    link(href="http://giji.sytes.net/stylesheets/cinema800.css", media="screen", rel="stylesheet", type="text/css", app="css")
+    script(src="http://giji.sytes.net/assets/application.js")
+    != SocketStream
+    meta(charset="utf-8")
+    title Welcome
+
+  body
+    #outframe.outframe
+      #contentframe.contentframe
+        p.css_changer
+        .inframe
+          h2 Welcome to your new realtime app!
+          hr.invisible_hr
+        
+          // QUICK CHAT DEMO
+          form#demo(onsubmit='return false')
+            h3 Quick Chat Demo
+            h5 Open this page in multiple tabs or browsers and type a message below
+            #chatlog
+            input(id='myMessage', type='text', autocomplete='off')
+
+          address
+            | 人狼議事キャラセット by りりんら
+            br
+            | 管理 sol・la     
+            a(href="mailto:7korobi@gmail.com")
+              | ななころび
+            br
+            | 人狼議事で使っているキャラチップは、原則として他所での利用を許諾しておりません。ご了承ください。
+
+      #footer
+      #sayfilter.sayfilter
+        ul.nav.nav-pills
+          li#filter_header.sayfilter_heading.active
+            a(href='#info', data-toggle="tab")
+              | 操作
+          li#filter_header.sayfilter_heading
+            a(href='#link', data-toggle="tab")
+              | 移動
+          li#filter_header.sayfilter_heading
+            a(href='#calc', data-toggle="tab")
+              | 計算
+        .tab-content
+          #link.tab-pane
+            h3.sayfilter_heading 
+            .insayfilter
+              .paragraph
+                h4.sayfilter_caption_enable 
+                .sayfilter_content
+          #info.tab-pane.active
+            h3.sayfilter_heading 
+            .insayfilter
+              .paragraph
+                h4.sayfilter_caption_enable 
+                .sayfilter_content
+          #calc.tab-pane
+            h3.sayfilter_heading 
+            .insayfilter
+              .paragraph
+                h4.sayfilter_caption_enable 
+                .sayfilter_content
+

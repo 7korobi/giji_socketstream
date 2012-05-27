@@ -1,0 +1,18 @@
+{
+  "name": "giji_socketstream",
+  "description": "An awesome real time application",
+  "version": "0.0.1",
+  "author": "7korobi <7korobi@gmail.com>",
+  "private": true,
+  "engines": { "node": ">= 0.6.0" },
+  "dependencies": {
+    "socketstream": "0.3.x",
+    "ss-coffee": "0.1.x",
+    "ss-jade": "0.1.x",
+    "ss-stylus": "0.1.x",
+    "ss-hogan": "0.1.x",
+    "ss-console": "x.x.x",
+    "connect-redis": "x.x.x",
+    "mongoose": "x.x.x"
+  }
+}
