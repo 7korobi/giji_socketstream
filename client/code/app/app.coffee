@@ -1,6 +1,16 @@
 ### QUICK CHAT DEMO ####
+
 Client.css.location = "http://giji.sytes.net/stylesheets/"
-Client.css.reload()
+$ ->
+  Client.css.reload()
+
+  params = location.href.match ///
+    (trpg-.-.)/(.*)
+  ///
+  ss.rpc 'demo.initialize',
+    rails_token: params.pop()
+    event_id: params.pop()
+
 
 # Delete this file once you've seen how the demo works
 
@@ -11,8 +21,9 @@ ss.event.on 'newMessage', (message) ->
   html = ss.tmpl['chat-message'].render({message: message, time: -> timestamp() })
 
   # Append it to the #chatlog div and show effect
-  $(html).hide().appendTo('#chatlog').slideDown()
-
+  $(html).hide().appendTo('#chatlog').slideDown("fast", ->
+    $(window).trigger('resize');
+  )
 
 # Show the chat form and bind to the submit action
 $('#demo').on 'submit', ->
