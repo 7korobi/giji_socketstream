@@ -9,21 +9,19 @@ $ ->
   ///
   ss.rpc 'demo.initialize',
     rails_token: params.pop()
-    event_id: params.pop()
+    event_id:    params.pop()
 
 
-# Delete this file once you've seen how the demo works
-
-# Listen out for newMessage events coming from the server
 ss.event.on 'newMessage', (message) ->
 
-  # Example of using the Hogan Template in client/templates/chat/message.jade to generate HTML for each message
-  html = ss.tmpl['chat-message'].render({message: message, time: -> timestamp() })
+  html = ss.tmpl['giji-info'].render
+    color: 'INFONOM', 
+    text:   message,
+    time: -> timestamp() 
 
   # Append it to the #chatlog div and show effect
-  $(html).hide().appendTo('#chatlog').slideDown("fast", ->
-    $(window).trigger('resize');
-  )
+  $(html).hide().appendTo('#chatlog').slideDown "fast", ->
+    $(window).trigger 'resize'
 
 # Show the chat form and bind to the submit action
 $('#demo').on 'submit', ->
@@ -31,7 +29,6 @@ $('#demo').on 'submit', ->
   # Grab the message from the text box
   text = $('#myMessage').val()
 
-  # Call the 'send' funtion (below) to ensure it's valid before sending to the server
   exports.send text, (success) ->
     if success
       $('#myMessage').val('') # clear text box
