@@ -1,11 +1,8 @@
 ### QUICK CHAT DEMO ####
 
-Client.css.location = "http://giji.sytes.net/stylesheets/"
 $ ->
-  Client.css.reload()
-
   params = location.href.match ///
-    (trpg-.-.)/(.*)
+    trpg/([a-z]*-.-.)/(.*)
   ///
   ss.rpc 'demo.initialize',
     rails_token: params.pop()

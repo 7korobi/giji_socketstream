@@ -14,6 +14,7 @@
     "ss-console": "x.x.x",
     "connect-redis": "x.x.x",
     "mongoose":      "x.x.x",
-    "everyauth":     "x.x.x"
+    "everyauth":     "x.x.x",
+    "sugar":  "x.x.x"
   }
 }

@@ -1,7 +1,10 @@
 // My SocketStream app
 
-var http = require('http')
-  , ss = require('socketstream');
+var sugar = require('sugar')
+  , http = require('http')
+  , ss  = require('socketstream');
+
+Object.extend();
 
 // Define a single-page client
 ss.client.define('trpg', {
@@ -22,10 +25,6 @@ ss.client.formatters.add(require('ss-stylus'));
 
 // Use server-side compiled Hogan (Mustache) templates. Others engines available
 ss.client.templateEngine.use(require('ss-hogan'));
-
-redis_db = {host: 'utage.sytes.net', port: 6379, db: 3}
-ss.session.store.use(    "redis", redis_db);
-ss.publish.transport.use('redis', redis_db);
 
 // Minimize and pack assets if you type: SS_ENV=production node app.js
 if (ss.env == 'production') ss.client.packAssets();

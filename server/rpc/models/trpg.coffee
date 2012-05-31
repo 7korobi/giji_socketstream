@@ -1,25 +1,28 @@
 db = require 'mongoose'
-
-Schema   = db.Schema
 ObjectId = db.Schema.ObjectId
 
-Message = new Schema
+Chat = 
   _id:   String
   logid: String
-  subid: String
 
-  color:   String
   style:   String
-  mestype: String
 
   potof_id: ObjectId
-  face_id:  String
-  name: String
-  csid: String
   to:   String
   log:  String
 
-TrpgEvent = new Schema
+
+Message = Chat.merge
+  subid: String
+
+  color:   String
+  mestype: String
+
+  face_id:  String
+  name: String
+  csid: String
+
+TrpgEvent = 
   _id:      String
   story_id: String
   turn:     Number
@@ -31,7 +34,7 @@ TrpgEvent = new Schema
   closed_at:  Date
   created_at: {type: Date,   default: Date.now}
 
-TrpgStory = new Schema
+TrpgStory = 
   _id:    String
   folder: String
   vid:    Number
@@ -45,7 +48,7 @@ TrpgStory = new Schema
 
 
 
-TrpgPotof  = new Schema
+TrpgPotof = 
   _id:    ObjectId
   _type:  {type: String, default: 'TrpgPotof' }
 
@@ -56,30 +59,22 @@ TrpgPotof  = new Schema
   story_id: String
 
 
-Face  = new Schema
+Face = 
   _id:   String
   face_id: String
   name:    String
   comment: String
   order:   String
 
-User = new Schema
+User = 
   _id:     String
   user_id: String
   name:  String
   email: String
   rails_token: String
 
-
-db.model 'stories', TrpgStory
-db.model 'events',  TrpgEvent
-db.model 'potofs',  TrpgPotof
-db.model 'faces',   Face
-db.model 'users',   User
-db.connect "mongodb://7korobi:kotatsu3@utage.sytes.net/giji"
-
-module.exports.TrpgStory = db.model 'stories'
-module.exports.TrpgEvent = db.model 'events'
-module.exports.TrpgPotof = db.model 'potofs'
-module.exports.Face  = db.model 'faces'
-module.exports.User  = db.model 'users'
+console.log exports.TrpgStory = db.model 'stories', new db.Schema TrpgStory
+console.log exports.TrpgEvent = db.model 'events',  new db.Schema TrpgEvent
+console.log exports.TrpgPotof = db.model 'potofs',  new db.Schema TrpgPotof
+console.log exports.Face  = db.model 'faces',   new db.Schema Face
+console.log exports.User  = db.model 'users',   new db.Schema User

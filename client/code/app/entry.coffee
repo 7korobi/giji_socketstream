@@ -10,6 +10,8 @@ ss.server.on 'reconnect', ->
   console.log('Connection back up :-)')
 
 ss.server.on 'ready', ->
+  Client.css.location = "http://giji.sytes.net/stylesheets/"
+  Client.css.reload()
 
   # Wait for the DOM to finish loading
   jQuery ->
