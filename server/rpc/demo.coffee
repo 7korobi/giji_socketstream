@@ -3,7 +3,6 @@
 # Example of pre-loading sessions into req.session using internal middleware
 # Uncomment line below to use the middleware defined in server/middleware/example
 
-# db = require './models/trpg.coffee'
 
 events = {}
 users  = {}
@@ -15,6 +14,8 @@ exports.actions = (req, res, ss) ->
 
   initialize: (params)->
   no_use: ->
+    db = require './models/trpg.coffee'
+
     events[params.event_id]   || db.TrpgEvent.findById params.event_id, (err,doc)->
       console.log err
       console.log doc
