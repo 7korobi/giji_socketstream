@@ -16,7 +16,7 @@ ss.client.define('trpg', {
 // Serve this client on the root URL
 ss.http.route('/trpg', function(req, res){
   res.serveClient('trpg');
-})
+});
 
 // Code Formatters
 ss.client.formatters.add(require('ss-coffee'));
