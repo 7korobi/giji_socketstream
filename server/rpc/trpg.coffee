@@ -7,31 +7,37 @@
 exports.events = events = {}
 exports.users  = users  = {}
 
+exports.list = list = {}
+
 exports.actions = (req, res, ss) ->
   req.use 'session'
 
   initialize: (params)->
-    trpg = require './models/trpg.coffee'
     giji = require './models/giji.coffee'
-    req.session.channel.reset()
+    trpg = require './models/trpg.coffee'
 
-    users[params.rails_token] || giji.User.findOne rails_token: params.rails_token, (err,doc)->
-      console.log [err, doc]
-
-      giji.Face.findSelectOptions (err,faces)-> 
-        ss.publish.socketId  req.socketId, 'infoFrame', "ルールを良く理解した上でご参加ください。"
-        ss.publish.socketId  req.socketId, 'formFrame',
-          'form-entry':
-            faces: faces
-          'form-actor':
-            id:   'admin'
-            name: "闇のつぶやき（管理人）"
-        users[params.rails_token] = doc
-
-    events[params.event_id]   || trpg.Event.findById params.event_id, (err,doc)->
-      console.log [err, doc._id]
-      req.session.channel.subscribe(doc._id)
+    events[params.event_id] || trpg.Event.findById params.event_id, (err,doc)->
       events[params.event_id] = doc
+
+    giji.User.findOne rails_token: params.rails_token, (err,doc)->
+      users[params.rails_token] = doc
+
+    giji.Face.findSelectOptions (err,doc)-> 
+      list.faces = doc
+
+    if events[params.event_id] || true
+      req.session.channel.reset()
+      req.session.channel.subscribe params.event_id
+
+  
+      ss.publish.socketId  req.socketId, 'infoFrame', "ルールを良く理解した上でご参加ください。"
+      ss.publish.socketId  req.socketId, 'formFrame',
+        'form-entry':
+          faces: list.faces
+        'form-actor':
+          id:   'admin'
+          name: "闇のつぶやき（管理人）"
+
 
   sendMessage: (message, event_id) ->
     if message && message.length > 0            # Check for blank messages

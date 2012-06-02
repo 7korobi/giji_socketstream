@@ -18,7 +18,7 @@ ss.server.on 'ready', ->
   jQuery ->
     require('/app')
     
-    Client.css.location = "http://giji.sytes.net/stylesheets/"
+    Client.css.location = "#{URL.rails}/stylesheets/"
     Client.css.reload()
 
     ss.rpc 'trpg.initialize',

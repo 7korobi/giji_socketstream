@@ -22,12 +22,13 @@ ss.event.on 'newMessage', (message) ->
 
 
 
-$(document).on 'click', '#form-entry :submit', ->
+$(document).on 'click',  '#form-entry :submit', ->
   false
 
 $(document).on 'change', '#form-entry select', ->
   id = $(@).val();
-  $('#form-entry .img img').attr('src', "http://giji.sytes.net/images/portrate/#{id}.jpg")
+  $('#form-entry .img img').attr('src', "#{URL.rails}/images/portrate/#{id}.jpg")
+
 
 $(document).on 'click', '#form-actor :submit', ->
   false
