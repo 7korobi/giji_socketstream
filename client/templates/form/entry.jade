@@ -1,0 +1,38 @@
+table.formpl_common#form-entry
+  tr.say
+    td.img
+      img(name="chr_img", src="http://giji.sytes.net/images/portrate/undef.jpg")
+    td.field
+      .msg
+        .formpl_content
+          | 希望する配役：
+          select
+            {{#faces}}
+            option(value="")
+            optgroup(label="人狼議事")
+              {{#c}}
+              option(value="{{face_id}}") {{name}}
+              {{/c}}
+            optgroup(label="和の国てやんでえ")
+              {{#w}}
+              option(value="{{face_id}}") {{name}}
+              {{/w}}
+            optgroup(label="明後日への道標")
+              {{#sf}}
+              option(value="{{face_id}}") {{name}}
+              {{/sf}}
+            optgroup(label="はおうの広場")
+              {{#m}}
+              option(value="{{face_id}}") {{name}}
+              {{/m}}
+              {{#r}}
+              option(value="{{face_id}}") {{name}}
+              {{/r}}
+              {{#b}}
+              option(value="{{face_id}}") {{name}}
+              {{/b}}
+            {{/faces}}
+        .formpl_content
+          input(type="submit", value="このシーンに参加する")
+.clearboth
+  hr.invisible_hr

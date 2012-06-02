@@ -1,0 +1,20 @@
+table.formpl_common#form-actor
+  tbody
+    tr.say
+      td.img
+        img(name="chr_img", src="http://giji.sytes.net/images/portrate/{{id}}.jpg")
+      td.field
+        .msg
+          .formpl_content
+            .confirm
+          .formpl_content
+            | {{name}}
+          .formpl_content
+            textarea.params(name="log", cols="30", rows="5")
+            input(type="submit", value="発言")
+            select.params(name="style")
+              option(value="")     通常
+              option(value="mono") 等幅
+              option(value="repo") 見出し
+.clearboth
+  hr.invisible_hr
