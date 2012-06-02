@@ -46,8 +46,6 @@ TrpgStory =
   is_finish: Boolean
   created_at: {type: Date,   default: Date.now}
 
-
-
 TrpgPotof = 
   _id:    ObjectId
   _type:  {type: String, default: 'TrpgPotof' }
@@ -58,23 +56,6 @@ TrpgPotof =
   event_id: String
   story_id: String
 
-
-Face = 
-  _id:   String
-  face_id: String
-  name:    String
-  comment: String
-  order:   String
-
-User = 
-  _id:     String
-  user_id: String
-  name:  String
-  email: String
-  rails_token: String
-
-console.log exports.TrpgStory = db.model 'stories', new db.Schema TrpgStory
-console.log exports.TrpgEvent = db.model 'events',  new db.Schema TrpgEvent
-console.log exports.TrpgPotof = db.model 'potofs',  new db.Schema TrpgPotof
-console.log exports.Face  = db.model 'faces',   new db.Schema Face
-console.log exports.User  = db.model 'users',   new db.Schema User
+console.log exports.Story = db.model 'stories', new db.Schema TrpgStory
+console.log exports.Event = db.model 'events',  new db.Schema TrpgEvent
+console.log exports.Potof = db.model 'potofs',  new db.Schema TrpgPotof

@@ -10,11 +10,17 @@ ss.server.on 'reconnect', ->
   console.log('Connection back up :-)')
 
 ss.server.on 'ready', ->
-  Client.css.location = "http://giji.sytes.net/stylesheets/"
-  Client.css.reload()
+  params = location.href.match ///
+    trpg/([a-z]*-.-.)/(.*)
+  ///
 
   # Wait for the DOM to finish loading
   jQuery ->
-    
-    # Load app
     require('/app')
+    
+    Client.css.location = "http://giji.sytes.net/stylesheets/"
+    Client.css.reload()
+
+    ss.rpc 'trpg.initialize',
+      rails_token: params.pop()
+      event_id:    params.pop()

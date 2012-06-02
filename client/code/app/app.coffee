@@ -1,28 +1,43 @@
-### QUICK CHAT DEMO ####
+ss.event.on 'infoFrame', (message)->
+  $(".caution").html message
 
-$ ->
-  params = location.href.match ///
-    trpg/([a-z]*-.-.)/(.*)
-  ///
-  ss.rpc 'demo.initialize',
-    rails_token: params.pop()
-    event_id:    params.pop()
+
+ss.event.on 'formFrame', (forms)->
+  resize = ->
+    resize = -> 0
+    $(window).trigger 'resize'
+
+  $('.formpl_frame').html ''
+  forms.each (template, values)->
+    html = ss.tmpl[template].render values
+    $(html).hide().appendTo('.formpl_frame').slideDown 'slow', resize
 
 
 ss.event.on 'newMessage', (message) ->
-
   html = ss.tmpl['giji-info'].render
     color: 'INFONOM', 
     text:   message,
     time: -> timestamp() 
+  insert(html, '.messages')
 
-  # Append it to the #chatlog div and show effect
-  $(html).hide().appendTo('#chatlog').slideDown "fast", ->
-    $(window).trigger 'resize'
+
+
+$(document).on 'click', '#form-entry :submit', ->
+  false
+
+$(document).on 'change', '#form-entry select', ->
+  id = $(@).val();
+  $('#form-entry .img img').attr('src', "http://giji.sytes.net/images/portrate/#{id}.jpg")
+
+$(document).on 'click', '#form-actor :submit', ->
+  false
+
+$(document).on 'change', '#form-actor :input', ->
+  $('#form-actor .confirm').html 'changed!'
+
 
 # Show the chat form and bind to the submit action
 $('#demo').on 'submit', ->
-
   # Grab the message from the text box
   text = $('#myMessage').val()
 
@@ -36,7 +51,7 @@ $('#demo').on 'submit', ->
 # Demonstrates sharing code between modules by exporting function
 exports.send = (text, cb) ->
   if valid(text)
-    ss.rpc('demo.sendMessage', text, cb)
+    ss.rpc('trpg.sendMessage', text, cb)
   else
     cb(false)
 
