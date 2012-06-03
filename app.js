@@ -10,6 +10,7 @@ Object.extend();
 ss.client.define('trpg', {
   view: 'trpg.jade',
   code: ['app'],
+  css:  [],
   tmpl: '*'
 });
 
@@ -27,7 +28,7 @@ ss.client.formatters.add(require('ss-stylus'));
 ss.client.templateEngine.use(require('ss-hogan'));
 
 // Minimize and pack assets if you type: SS_ENV=production node app.js
-if (ss.env == 'production') ss.client.packAssets();
+ss.client.packAssets();
 
 // Start web server
 var server = http.Server(ss.http.middleware);

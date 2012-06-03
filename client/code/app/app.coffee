@@ -26,7 +26,7 @@ $(document).on 'click',  '#form-entry :submit', ->
   false
 
 $(document).on 'change', '#form-entry select', ->
-  id = $(@).val();
+  id = $(@).val() || 'undef';
   $('#form-entry .img img').attr('src', "#{URL.rails}/images/portrate/#{id}.jpg")
 
 

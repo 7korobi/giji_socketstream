@@ -21,6 +21,4 @@ ss.server.on 'ready', ->
     Client.css.location = "#{URL.rails}/stylesheets/"
     Client.css.reload()
 
-    ss.rpc 'trpg.initialize',
-      rails_token: params.pop()
-      event_id:    params.pop()
+    ss.rpc 'trpg.initialize', params.pop(), params.pop()
