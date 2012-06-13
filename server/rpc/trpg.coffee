@@ -25,10 +25,10 @@ fetch = (cash, key, access, ok, ng)->
 
 exports.actions = (req, res, ss) ->
   req.use 'session'
+  giji = require '../models/giji.coffee'
+  trpg = require '../models/trpg.coffee'
 
   initialize: (rails_token, event_id)->
-    giji = require '../models/giji.coffee'
-    trpg = require '../models/trpg.coffee'
 
     giji.User.findOne rails_token: rails_token, (err,user)->
       if err
@@ -86,6 +86,12 @@ exports.actions = (req, res, ss) ->
       else
         doc
 
+  entryPotof: (face_id) ->
+    giji.Face.findSelectOptions (err,doc)-> 
+      ss.publish.socketId.delay 500, req.socketId, 'formFrame',
+        'form-entry':
+          faces: doc
+    res(true)
 
   sendMessage: (message, event_id) ->
     if message && message.length > 0            # Check for blank messages

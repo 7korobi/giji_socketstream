@@ -7,14 +7,15 @@
   "engines": { "node": ">= 0.6.0" },
   "dependencies": {
     "socketstream": "0.3.x",
-    "ss-coffee":  "0.1.x",
-    "ss-jade":    "0.1.x",
-    "ss-stylus":  "0.1.x",
-    "ss-hogan":   "0.1.x",
+    "ss-coffee":  "x.x.x",
+    "ss-jade":    "x.x.x",
+    "ss-stylus":  "x.x.x",
     "ss-console": "x.x.x",
     "connect-redis": "x.x.x",
     "mongoose":      "x.x.x",
     "everyauth":     "x.x.x",
-    "sugar":  "x.x.x"
+    "ss-hogan": "x.x.x",
+    "ember":    "x.x.x",
+    "sugar":    "x.x.x"
   }
 }

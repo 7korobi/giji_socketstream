@@ -1,17 +1,18 @@
-ss.event.on 'infoFrame', (message)->
-  $(".caution").html message
+class Frame
+  constructor: ->
+    @data?().each (template, cb)=>
+      @baseId = "#" + template.dasherize()
+      cb()
+    ss.event.on @rpc, @render  if  @rpc
+  find: (path)-> $("#{@baseId} #{path}")
 
+  [ 'click'
+    'change'
+  ].each (event)->
+    Frame.prototype[event] = (path, act)->
+      $(document).on event,  "#{@baseId} #{path}", act
 
-ss.event.on 'formFrame', (forms)->
-  resize = ->
-    resize = -> 0
-    $(window).trigger 'resize'
-
-  $('.formpl_frame').html ''
-  forms.each (template, values)->
-    html = ss.tmpl[template].render values
-    $(html).hide().appendTo('.formpl_frame').slideDown 'slow', resize
-
+exports.Frame = Frame
 
 ss.event.on 'newMessage', (message) ->
   html = ss.tmpl['giji-info'].render
@@ -20,21 +21,6 @@ ss.event.on 'newMessage', (message) ->
     time: -> timestamp() 
   insert(html, '.messages')
 
-
-
-$(document).on 'click',  '#form-entry :submit', ->
-  false
-
-$(document).on 'change', '#form-entry select', ->
-  id = $(@).val() || 'undef';
-  $('#form-entry .img img').attr('src', "#{URL.rails}/images/portrate/#{id}.jpg")
-
-
-$(document).on 'click', '#form-actor :submit', ->
-  false
-
-$(document).on 'change', '#form-actor :input', ->
-  $('#form-actor .confirm').html 'changed!'
 
 
 # Show the chat form and bind to the submit action

@@ -17,6 +17,7 @@ ss.server.on 'ready', ->
   # Wait for the DOM to finish loading
   jQuery ->
     require('/app')
+    require('/form')
     
     Client.css.location = "#{URL.rails}/stylesheets/"
     Client.css.reload()
