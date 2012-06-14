@@ -1,18 +1,23 @@
 class Frame
-  constructor: ->
-    @data?().each (template, cb)=>
-      @baseId = "#" + template.dasherize()
-      cb()
-    ss.event.on @rpc, @render  if  @rpc
+  event: (rpc, render)->
+    ss.event.on rpc, render
   find: (path)-> $("#{@baseId} #{path}")
 
-  [ 'click'
-    'change'
-  ].each (event)->
-    Frame.prototype[event] = (path, act)->
-      $(document).on event,  "#{@baseId} #{path}", act
+[ 'click'
+  'change'
+].each (event)->
+  Frame.prototype[event] = (path, act)->
+    $(document).on event,  "#{@baseId} #{path}", act
 
+Frame.each = (obj, data)->
+  data?.each (template, cb)->
+    frame = new Frame
+    frame.baseId = "#" + template.dasherize() if template
+    frame.initialize = cb
+    frame.initialize()
+    obj[template] = frame
 exports.Frame = Frame
+
 
 ss.event.on 'newMessage', (message) ->
   html = ss.tmpl['giji-info'].render
@@ -20,7 +25,6 @@ ss.event.on 'newMessage', (message) ->
     text:   message,
     time: -> timestamp() 
   insert(html, '.messages')
-
 
 
 # Show the chat form and bind to the submit action

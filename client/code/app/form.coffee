@@ -1,45 +1,42 @@
-Frame = require('/app').Frame
-
 resize = -> $(window).trigger 'resize'
 clear  = -> $(@).html ''
+render = (forms)->
+  at = $('.formpl_frame')
+  at.html ''
+  forms.each (template, values)->
+    html = ss.tmpl[template].render values
+    $(html).appendTo(at)
+  at.hide().slideDown 'slow', resize
 
-class FormFrame extends Frame
-  rpc: 'formFrame'
-  render: (forms)->
-    at = $('.formpl_frame')
-    at.html ''
-    forms.each (template, values)->
-      html = ss.tmpl[template].render values
-      $(html).appendTo(at)
-    at.hide().slideDown 'slow', resize
+Frame = require('/app').Frame
 
-  data: ->
-    formEntry: =>
-      @click ':submit', =>
-        face_id = @find('select').val()
-        ss.rpc 'trpg.entryPotof', face_id, (success) => 
-          if success
-            @find().show().slideUp 'normal', clear
-          else
-            alert('Oops! Unable to send message')
+Frame.each exports,
+  formEntry: ->
+    @event 'formFrame', render
+    @click ':submit', =>
+      face_id = @find('#face').val()
+      prefix = @find('#prefix').val()
+      name  = @find("[value=#{face_id}]").text()
+      ss.rpc 'trpg.entryPotof', face_id, prefix, name, (success) => 
+        if success
+          @find().show().slideUp 'normal', clear
+        else
+          alert('Oops! Unable to send message')
 
-      @change 'select', =>
-        face_id = @find('select').val() || 'undef'
-        imgPath = "#{URL.rails}/images/portrate/#{face_id}.jpg"
-        @find('.img img').attr 'src', imgPath
+    @change '#face', =>
+      face_id = @find('#face').val() || 'undef'
+      imgPath = "#{URL.rails}/images/portrate/#{face_id}.jpg"
+      @find('.img img').attr 'src', imgPath
 
-    formActor: =>
-      @click ':submit', =>
-        false
+  formActor: ->
+    @event 'formFrame', render
+    @click ':submit', =>
+      false
 
-      @change ':input', =>
-        @find('.confirm').html 'changed!'
+    @change ':input', =>
+      @find('.confirm').html 'changed!'
 
-class InfoFrame extends Frame
-  rpc: 'infoFrame'
-  render: (message)->
-    $(".caution").html message
-
-exports.InfoFrame = new InfoFrame()
-exports.FormFrame = new FormFrame()
+exports.InfoFrame = new Frame
+exports.InfoFrame.event 'infoFrame', (message)->
+  $(".caution").html message
 

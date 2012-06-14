@@ -70,23 +70,28 @@ exports.actions = (req, res, ss) ->
 
     console.log req.session
 
-  join: (face_id, name)->
-    trpg.Potof.findOne event_id: event._id, (err, doc)->
-      console.log [err]
-      if err
-        event = events[req.session.event._id]
-        user  = users[req.socketId]
-        potof = new trpg.Potof
-          user_id:  user._id
-          face_id:  face_id
-          name:     name
-          event_id: event._id
-          story_id: event.story_id
-        potof.save()
+  entryPotof: (face_id, prefix, name)->
+    story = req.session.story
+    event = req.session.event
+    user  = req.session.user
+    trpg.Potof.findOne event_id: event._id, user_id: user._id, (err, doc)->
+      console.log [event._id, user._id]
+      console.log doc
+      if doc && story && event && user
       else
-        doc
-
-  entryPotof: (face_id) ->
+        console.log [story.is_open(), event.is_open()]
+        if story.is_open() && event.is_open()
+          potof = new trpg.Potof
+            fullname: "#{prefix} #{name}"
+            name:     name
+            face_id:  face_id
+            user_id:  user._id
+            event_id: event._id
+            story_id: story._id
+          console.log potof.save()
+          console.log potof
+        else
+          res(false)
     giji.Face.findSelectOptions (err,doc)-> 
       ss.publish.socketId.delay 500, req.socketId, 'formFrame',
         'form-entry':

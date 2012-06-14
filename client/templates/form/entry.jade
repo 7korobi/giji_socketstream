@@ -6,7 +6,8 @@ table.formpl_common#form-entry
       .msg
         .formpl_content
           | 希望する配役：
-          select
+          input#prefix(style="width: 8em;")
+          select#face( style="width: 8em;")
             {{#faces}}
             option(value="")
             optgroup(label="人狼議事")
