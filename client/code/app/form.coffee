@@ -11,7 +11,7 @@ render = (forms)->
 Frame = require('/app').Frame
 
 Frame.each exports,
-  formJoin: ->
+  'form-join': ->
     @event 'formFrame', render
     @click ':submit', =>
       ss.rpc 'trpg.joinPotof', (success) => 
@@ -20,7 +20,7 @@ Frame.each exports,
         else
           alert('Oops! Unable to send message')
 
-  formBye: ->
+  'form-bye': ->
     @event 'formFrame', render
     @click ':submit', =>
       ss.rpc 'trpg.byePotof', (success) => 
@@ -29,7 +29,7 @@ Frame.each exports,
         else
           alert('Oops! Unable to send message')
 
-  formEntry: ->
+  'form-entry': ->
     @event 'formFrame', render
     @click ':submit', =>
       face_id = @find('#face').val()
@@ -46,7 +46,7 @@ Frame.each exports,
       imgPath = "#{URL.rails}/images/portrate/#{face_id}.jpg"
       @find('.img img').attr 'src', imgPath
 
-  formActor: ->
+  'form-actor': ->
     @event 'formFrame', render
     @click ':submit', =>
       false

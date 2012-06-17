@@ -42,7 +42,6 @@ class Stat
 
   near_potof: (cb)->
     trpg.Potof.findOne  story_id: @story_id, user_id: @user_id, (err, potof)=>
-      console.log [@story_id, @user_id, potof]
       @potof = potof if potof
       cb(err, potof)
 
@@ -67,22 +66,26 @@ Stat.memory = (id)->
 
 exports.actions = (req, res, ss) ->
   req.use 'session'
-
-  info = (data)-> 
-    ss.publish.socketId req.socketId, 'infoFrame', data
-    console.log data
-  form = (data)-> ss.publish.socketId req.socketId, 'formFrame', data
-  log  = (data)-> ss.publish.socketId req.socketId,  'logFrame', data
-  pub  = (data)-> ss.publish
-
   stat = Stat.memory(req.sessionId)
-  console.log.delay 1000, req
-  console.log.delay 2000, stat
+  req.to_self = (rpc, data)->
+    if req.session.ready?
+      ss.publish.channel @sessionId, rpc, data
+    else
+      ss.publish.socketId @socketId, rpc, data
+  req.to_pub = (rpc, data)->
+    ss.publish.channel # stat.event_id
 
-  abort_potof = (err)->
-    info "更新できませんでした。" if err?
+  info  = (data)->  req.to_self  'infoFrame', data
+  form  = (data)->  req.to_self  'formFrame', data
+  log   = (data)->  req.to_self   'logFrame', data
+  title = (data)->  req.to_self 'titleFrame', data
+  pub   = (data)->  req.to_pub  
+
+  abort_potof = (err)-> info "更新できませんでした。"         if err?
+  abort_event = (err)-> info "イベントを更新できませんでした。" if err?
 
   initialize: (rails_token, event_id)->
+    req.session.ready = null
     stat.error = (type, key, err)->
       info "missing #{type}."
     stat.initialize rails_token, (user)->
@@ -91,24 +94,39 @@ exports.actions = (req, res, ss) ->
 
     stat.fetch 'event', event_id, (event)->
       stat.fetch 'story', event.story_id, (story)->
+        req.session.channel.reset()
         req.session.channel.subscribe event._id
-        req.session.save()
-        pub
+        req.session.channel.subscribe req.sessionId
+        title event.name
+        log   event.messages
 
-        switch event.state
-          when 'OPEN'
-            stat.near_potof (err, potof)->
-              if potof
-                form 'form-bye':
-                  face_id:  potof.face_id
-                  fullname: potof.fullname
+        stat.near_potof (err, potof)->
+          if potof
+            switch event.state
+              when 'OPEN'
+                form
+                  'form-actor': potof
+                  'form-bye':   potof
+                req.session.ready = true
+                req.session.save()
               else
+                form
+                  'form-actor': potof
+                req.session.ready = true
+                req.session.save()
+          else
+            switch event.state
+              when 'OPEN'
                 giji.Face.findSelectOptions (err,doc)-> 
                   form
                     'form-entry':
                       faces: doc
-          else
-            info "このイベントには参加できません。"
+                  req.session.ready = true
+                  req.session.save()
+              else
+                info "このイベントには参加できません。"
+                req.session.ready = true
+                req.session.save()
 
   entryPotof: (face_id, prefix, name)->
     return info "選択が無効です。"         unless face_id && ! face_id.isBlank()
@@ -127,9 +145,7 @@ exports.actions = (req, res, ss) ->
       potof.save abort_potof
 
       form.delay 500
-        'form-join':
-          face_id: potof.face_id
-          fullname: potof.fullname
+        'form-join': potof
       
   joinPotof: ->
     stat.near_potof (err, potof)->
@@ -137,16 +153,13 @@ exports.actions = (req, res, ss) ->
         potof.event_id = stat.event_id
         potof.save abort_potof
         form
-          'form-actor':
-            face_id:  potof.face_id
-            fullname: potof.fullname
+          'form-actor': potof
 
   byePotof: ->
     stat.near_potof (err, potof)->
       if potof
         stat.potof = null
         potof.remove()
-        potof.save abort_potof
 
     switch stat.event.state
       when 'OPEN'
@@ -155,4 +168,25 @@ exports.actions = (req, res, ss) ->
             'form-entry':
               faces: doc
 
+  newEvent: ->
+
+  editEvent: (data)->
+    stat.event.update(data)
+    stat.event.save abort_event
+
+    switch data.state
+      when 'OPEN'
+        1
+      when 'INVITE'
+        1
+      when 'SECRET'
+        1
+      when 'CLOSE'
+        event_id = stat.event_id
+        exports.stat.each (id, stat)->
+          return unless event_id == stat.potof.event_id
+          exports.stat[id]    = null
+          stat.potof.event_id = null
+          stat.potof.save abort_potof
+    pub
   sayMessage: ->

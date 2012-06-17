@@ -18,6 +18,25 @@ Frame.each = (obj, data)->
     obj[template] = frame
 exports.Frame = Frame
 
+exports.TitleFrame = new Frame
+exports.TitleFrame.event 'titleFrame', (title)->
+  $("#log-name").text(title)
+
+exports.LogFrame = new Frame
+exports.LogFrame.event 'logFrame', (log)->
+  console.log log
+  frame = $(".messages")
+  log.each (item)->
+    1
+
+render = (forms)->
+  at = $('.formpl_frame')
+  at.html ''
+  forms.each (template, values)->
+    html = ss.tmpl[template].render values
+    $(html).attr('id', template).appendTo(at)
+  at.hide().slideDown 'slow', resize
+
 
 ss.event.on 'newMessage', (message) ->
   html = ss.tmpl['giji-info'].render
