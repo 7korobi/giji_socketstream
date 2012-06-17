@@ -64,10 +64,7 @@ TrpgPotof =
   story_id: idString
 
 EventSchema = new db.Schema TrpgEvent
-EventSchema.methods.is_open = ->  0 == @turn && 'OPEN' == @state
-
 StorySchema = new db.Schema TrpgStory
-StorySchema.methods.is_open = ->  ! @is_finish
 
 console.log exports.Story = db.model 'stories', StorySchema
 console.log exports.Event = db.model 'events',  EventSchema

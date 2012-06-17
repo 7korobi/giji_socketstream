@@ -18,9 +18,12 @@ User =
 FaceSchema = new db.Schema Face
 FaceSchema.statics.findSelectOptions = (cb)->
   @where().asc('order').run (err,doc)->
-    group = doc.groupBy (o)->
-      o.face_id.match(/[a-z]+/)[0]
-    cb err, group
+    if doc
+      group = doc.groupBy (o)->
+        o.face_id.match(/[a-z]+/)[0]
+      cb err, group
+    else
+      cb err, null
 
 console.log exports.Face  = db.model 'faces', FaceSchema
 console.log exports.User  = db.model 'users', UserSchema = new db.Schema User

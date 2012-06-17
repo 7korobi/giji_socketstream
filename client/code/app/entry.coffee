@@ -10,7 +10,7 @@ ss.server.on 'reconnect', ->
   console.log('Connection back up :-)')
 
 ss.server.on 'ready', ->
-  params = location.href.match ///
+  params = location.pathname.match ///
     trpg/([a-z]*-.-.)/(.*)
   ///
 

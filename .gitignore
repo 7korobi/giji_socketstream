@@ -1,0 +1,4 @@
+.DS_Store
+config.coffee
+node_modules
+client/static

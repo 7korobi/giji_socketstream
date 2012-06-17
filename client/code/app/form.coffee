@@ -5,18 +5,36 @@ render = (forms)->
   at.html ''
   forms.each (template, values)->
     html = ss.tmpl[template].render values
-    $(html).appendTo(at)
+    $(html).attr('id', template).appendTo(at)
   at.hide().slideDown 'slow', resize
 
 Frame = require('/app').Frame
 
 Frame.each exports,
+  formJoin: ->
+    @event 'formFrame', render
+    @click ':submit', =>
+      ss.rpc 'trpg.joinPotof', (success) => 
+        if success
+          @find().show().slideUp 'normal', clear
+        else
+          alert('Oops! Unable to send message')
+
+  formBye: ->
+    @event 'formFrame', render
+    @click ':submit', =>
+      ss.rpc 'trpg.byePotof', (success) => 
+        if success
+          @find().show().slideUp 'normal', clear
+        else
+          alert('Oops! Unable to send message')
+
   formEntry: ->
     @event 'formFrame', render
     @click ':submit', =>
       face_id = @find('#face').val()
       prefix = @find('#prefix').val()
-      name  = @find("[value=#{face_id}]").text()
+      name  = if face_id? then  @find("[value=#{face_id}]").text() else null 
       ss.rpc 'trpg.entryPotof', face_id, prefix, name, (success) => 
         if success
           @find().show().slideUp 'normal', clear
