@@ -11,7 +11,7 @@ ss.client.define('trpg', {
   view: 'trpg.jade',
   code: ['app'],
   css:  [],
-  tmpl: '*'
+  tmpl: ['*']
 });
 
 // Serve this client on the root URL
@@ -25,8 +25,6 @@ ss.client.formatters.add(require('ss-jade'));
 ss.client.formatters.add(require('ss-stylus'));
 
 // Use server-side compiled Hogan (Mustache) templates. Others engines available
-// ss.client.templateEngine.use('ember');
-ss.client.templateEngine.use(require('ss-hogan'));
 
 // Minimize and pack assets if you type: SS_ENV=production node app.js
 // ss.client.packAssets();

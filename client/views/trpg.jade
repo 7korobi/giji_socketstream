@@ -1,27 +1,46 @@
 !!! 5
 html(lang="en")
-  head
+  head(ng-controller="HEAD")
     meta(http-equiv='Content-Type', content='text/html; charset=utf-8')
     meta(content="7korobi@gmail.com", name="Author")
     meta(name="viewport", content="width=device-width, target-densitydpi=device-dpi, user-scalable=yes, initial-scale=1.0, minimum-scale=1.0, maximum-scale=2.0")
 
-    link(href="mailto:7korobi@gmail.com", rev="Made")
     script(src="http://giji.sytes.net/assets/giji.js")
     script(src="http://giji.sytes.net/assets/application.js")
     script(src="http://giji.sytes.net/assets/data.js")
     != SocketStream
+    link(href="mailto:7korobi@gmail.com", rev="Made")
+    link(media="screen", rel="stylesheet", type="text/css", href="{{css.href}}")
+
     meta(charset="utf-8")
-    title Welcome
+    title {{main.title}}
 
   body
     #outframe.outframe
       #contentframe.contentframe
-        p.css_changer
-        .inframe
-          h2#log-name
+        p(ng-controller="CSS")
+          a(ng-click="click('cinema', 800)", ng-class="name.cinema800") 煉瓦
+          |  
+          a(ng-click="click('cinema', 480)", ng-class="name.cinema480") 480
+          | ｜ 
+          a(ng-click="click('night', 800)", ng-class="name.night800") 月夜
+          |  
+          a(ng-click="click('night', 480)", ng-class="name.night480") 480
+          | ｜ 
+          a(ng-click="click('star', 800)", ng-class="name.star800") 蒼穹
+          |  
+          a(ng-click="click('star', 480)", ng-class="name.star480") 480
+          | ｜ 
+          a(ng-click="click('wa', 800)", ng-class="name.wa800") 和の国
+          |  
+          a(ng-click="click('wa', 480)", ng-class="name.wa480") 480
+        .inframe(ng-controller="MAIN")
+          h2 {{title}}
           hr.invisible_hr
           .messages
+            .message_filter(ng-repeat="log in logs | orderBy:'text'", ng-bind-html-unsafe="message(log)")
           .caution
+            | {{caution}}
           .formpl_frame
 
           address
@@ -34,7 +53,7 @@ html(lang="en")
             | 人狼議事で使っているキャラチップは、原則として他所での利用を許諾しておりません。ご了承ください。
 
       #footer
-      #sayfilter.sayfilter
+      #sayfilter.sayfilter(ng-controller="TAB")
         ul.nav.nav-pills
           li#filter_header.sayfilter_heading.active
             a(href='#info', data-toggle="tab")

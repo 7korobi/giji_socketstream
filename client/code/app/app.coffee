@@ -1,3 +1,4 @@
+
 class Frame
   event: (rpc, render)->
     ss.event.on rpc, render

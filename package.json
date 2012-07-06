@@ -14,8 +14,6 @@
     "connect-redis": "x.x.x",
     "mongoose":      "x.x.x",
     "everyauth":     "x.x.x",
-    "ss-hogan": "x.x.x",
-    "ember":    "x.x.x",
     "sugar":    "x.x.x"
   }
 }

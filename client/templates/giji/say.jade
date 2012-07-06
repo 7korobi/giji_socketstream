@@ -1,14 +1,13 @@
-.message_filter
-  table(class="{{mestype}}")
-    tbody
-      tr.say
-        td.img
-          img(src="/images/portrate/{{face_id}}.jpg")
-        td.field
-          .msg
-            h3.mesname
-              a(name="{{logid}}")
-                | "{{name}}"
-            p(class="{{style}} text")
-              | {{{text}}}
-            p.mes_date  ({{logid}}) {{time}}
+table(class="{{mestype}}")
+  tbody
+    tr.say
+      td.img
+        img(src="http://giji.sytes.net/images/portrate/{{face_id}}.jpg")
+      td.field
+        .msg
+          h3.mesname
+            a(name="{{logid}}")
+              | {{name}}
+          p(class="{{style}} text")
+            | {{text}}
+          p.mes_date  ({{logid}}) {{time}}
