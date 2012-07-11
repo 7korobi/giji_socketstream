@@ -19,26 +19,26 @@ html(lang="en")
     #outframe.outframe
       #contentframe.contentframe
         p(ng-controller="CSS")
-          a(ng-click="click('cinema', 800)", ng-class="name.cinema800") 煉瓦
+          a(ng-click="move('cinema800')", ng-class="name.cinema800") 煉瓦
           |  
-          a(ng-click="click('cinema', 480)", ng-class="name.cinema480") 480
+          a(ng-click="move('cinema480')", ng-class="name.cinema480") 480
           | ｜ 
-          a(ng-click="click('night', 800)", ng-class="name.night800") 月夜
+          a(ng-click="move('night800')", ng-class="name.night800") 月夜
           |  
-          a(ng-click="click('night', 480)", ng-class="name.night480") 480
+          a(ng-click="move('night480')", ng-class="name.night480") 480
           | ｜ 
-          a(ng-click="click('star', 800)", ng-class="name.star800") 蒼穹
+          a(ng-click="move('star800')", ng-class="name.star800") 蒼穹
           |  
-          a(ng-click="click('star', 480)", ng-class="name.star480") 480
+          a(ng-click="move('star480')", ng-class="name.star480") 480
           | ｜ 
-          a(ng-click="click('wa', 800)", ng-class="name.wa800") 和の国
+          a(ng-click="move('wa800')", ng-class="name.wa800") 和の国
           |  
-          a(ng-click="click('wa', 480)", ng-class="name.wa480") 480
+          a(ng-click="move('wa480')", ng-class="name.wa480") 480
         .inframe(ng-controller="MAIN")
           h2 {{title}}
           hr.invisible_hr
           .messages
-            .message_filter(ng-repeat="log in logs | orderBy:'text'", ng-bind-html-unsafe="message(log)")
+            .message_filter(ng-repeat="log in logs | orderBy:'time'", ng-bind-html-unsafe="message(log)")
           .caution
             | {{caution}}
           .formpl_frame
@@ -54,33 +54,50 @@ html(lang="en")
 
       #footer
       #sayfilter.sayfilter(ng-controller="TAB")
-        ul.nav.nav-pills
-          li#filter_header.sayfilter_heading.active
-            a(href='#info', data-toggle="tab")
+        nav
+          span#filter_header.page.sayfilter_heading
+            a.btn(ng-click='move("info")', ng-class="info")
               | 操作
-          li#filter_header.sayfilter_heading
-            a(href='#link', data-toggle="tab")
+          span#filter_header.page.sayfilter_heading
+            a.btn(ng-click='move("link")', ng-class="link")
               | 移動
-          li#filter_header.sayfilter_heading
-            a(href='#calc', data-toggle="tab")
+          span#filter_header.page.sayfilter_heading
+            a.btn(ng-click='move("calc")', ng-class="calc")
               | 計算
-        .tab-content
-          #link.tab-pane
-            h3.sayfilter_heading 
-            .insayfilter
-              .paragraph
-                h4.sayfilter_caption_enable 
-                .sayfilter_content
-          #info.tab-pane.active
-            h3.sayfilter_heading 
-            .insayfilter
-              .paragraph
-                h4.sayfilter_caption_enable 
-                .sayfilter_content
-          #calc.tab-pane
-            h3.sayfilter_heading 
-            .insayfilter
-              .paragraph
-                h4.sayfilter_caption_enable 
-                .sayfilter_content
+        ng-switch(on="item")
+          h3.sayfilter_heading
+          .insayfilter(ng-switch-when="link")
+            .paragraph
+              h4.sayfilter_caption_enable 
+                | 他のページヘ
+              .sayfilter_content
+                nav.pagination(ng-controller="PAGER")
+                  span.page(ng-show="show.first")
+                    a(ng-class="show.first", ng-click="move(first)") {{first}}
+                  span.page(ng-show="show.second")
+                    a(ng-class="show.second", ng-click="move(second)") {{second}}
+                  span.page(ng-show="show.prev_gap") …
+                  span.page(ng-show="show.prev")
+                    a(ng-class="show.prev", ng-click="move(prev)") {{prev}}
+                  span.page(ng-show="show.current")
+                    a(ng-class="show.current", ng-click="move(current)") {{current}}
+                  span.page(ng-show="show.next")
+                    a(ng-class="show.next", ng-click="move(next)") {{next}}
+                  span.page(ng-show="show.next_gap") …
+                  span.page(ng-show="show.penu")
+                    a(ng-class="show.penu", ng-click="move(penu)") {{penu}}
+                  span.page(ng-show="show.last")
+                    a(ng-class="show.last", ng-click="move(last)") {{last}}
+              h4.sayfilter_caption_enable 
+                | 他の物語へ
+
+          .insayfilter(ng-switch-when="info")
+            .paragraph
+              h4.sayfilter_caption_enable 
+              .sayfilter_content
+
+          .insayfilter(ng-switch-when="calc")
+            .paragraph
+              h4.sayfilter_caption_enable 
+              .sayfilter_content
 
